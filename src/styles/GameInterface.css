@@ -401,4 +401,28 @@
 }
 
 
-/* Keep other existing styles but remove any conflicting top-bar styles */
+.voice-button.recording {
+  background-color: #EF4444;
+  color: white;
+  animation: pulse-recording 2s infinite;
+}
+
+@keyframes pulse-recording {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.voice-button.recording:hover {
+  background-color: #DC2626;
+  color: white;
+}
+.hidden-file-input {
+  display: none;
+}
