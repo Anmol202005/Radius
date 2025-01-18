@@ -1,0 +1,227 @@
+.app-container {
+  background-color: #1E1E1E;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.solar-system {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid rgba(74, 222, 128, 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.orbit-1 { width: 400px; height: 400px; animation: rotate 20s linear infinite; }
+.orbit-2 { width: 600px; height: 600px; animation: rotate 30s linear infinite reverse; }
+.orbit-3 { width: 800px; height: 800px; animation: rotate 40s linear infinite; }
+
+.planet {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  text-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+  /* Remove background and border-radius as we're using icons now */
+}
+
+.planet-1 { 
+  width: auto; /* Changed from fixed width */
+  height: auto; /* Changed from fixed height */
+  top: 0; 
+  left: 50%; 
+  font-size: 20px;
+  color: #4ADE80;
+}
+
+.planet-2 { 
+  width: auto;
+  height: auto;
+  top: 0; 
+  left: 50%; 
+  font-size: 30px;
+  color: #4ADE80;
+}
+
+.planet-3 { 
+  width: auto;
+  height: auto;
+  top: 0; 
+  left: 50%; 
+  font-size: 20px;
+  color: #4ADE80;
+}
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  animation: twinkle 1s infinite;
+}
+
+@keyframes rotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+/* Keep existing logo and form styles */
+.logo {
+  font-size: 5rem;
+  margin-bottom: 2rem;
+  font-weight: bold;
+  text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
+}
+
+.logo-slither {
+  color: #A78BFA;
+}
+
+.logo-io {
+  color: #A78BFA;
+}
+
+.input-field {
+  background-color: #2D2D30;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 25px;
+  width: 300px;
+  font-size: 1.2rem;
+  color: #A78BFA;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 2;
+}
+
+.input-field::placeholder {
+  color: #6B7280;
+}
+
+.input-field:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #A78BFA;
+}
+
+.play-button {
+  display: block;
+  margin: 0 auto;
+  background-color: #A78BFA;
+  color: white;
+  border: none;
+  padding: 0.8rem 3rem;
+  border-radius: 25px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 2;
+}
+
+.play-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+.play-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Add these new styles */
+/* Add these new styles */
+.avatar-selector {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+}
+
+.avatar-main {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #2D2D30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid #A78BFA;
+  transition: all 0.3s ease;
+}
+
+.avatar-main:hover {
+  box-shadow: 0 0 15px rgba(74, 222, 128, 0.5);
+}
+
+.avatar-icon {
+  font-size: 24px;
+  color: #A78BFA;
+}
+
+.avatar-dropdown {
+  position: absolute;
+  top: 70px;
+  right: 0;
+  background-color: #2D2D30;
+  border-radius: 12px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.avatar-dropdown.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.avatar-option {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.avatar-option:hover {
+  border-color: #4ADE80;
+  background-color: #3D3D3D;
+}
+
+.avatar-option i {
+  font-size: 20px;
+  color: #4ADE80;
+}
+
+/* Keep existing styles */
