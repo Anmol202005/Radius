@@ -2,6 +2,7 @@ import { useLocation, Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useRef } from 'react';
 import '../styles/GameInterface.css';
+import { useEffect } from 'react';
 
 function GameInterface() {
   const location = useLocation();
@@ -11,7 +12,88 @@ function GameInterface() {
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioChunks, setAudioChunks] = useState([]);
   const fileInputRef = useRef(null);
+  const [networkNodes, setNetworkNodes] = useState([]);
   
+  useEffect(() => {
+    const avatarOptions = [
+      'fa-user',
+      'fa-dragon',
+      'fa-ghost',
+      'fa-robot',
+      'fa-skull',
+      'fa-user-ninja',
+      'fa-user-astronaut',
+      'fa-kiwi-bird',
+      'fa-spider'
+    ];
+  
+    const generateNode = () => ({
+      id: Math.random().toString(36).substr(2, 9),
+      x: Math.random() * 80 + 10,
+      y: Math.random() * 80 + 10,
+      avatar: avatarOptions[Math.floor(Math.random() * avatarOptions.length)],
+      isActive: true
+    });
+
+    // Calculate angles for connection lines
+    const updateLineAngles = () => {
+      const visualization = document.querySelector('.network-visualization');
+      if (!visualization) return;
+
+      const visualRect = visualization.getBoundingClientRect();
+      const centerX = visualRect.width / 2;
+      const centerY = visualRect.height / 2;
+
+      const nodes = document.querySelectorAll('.user-node');
+      nodes.forEach(node => {
+        const rect = node.getBoundingClientRect();
+        const nodeX = rect.left - visualRect.left + rect.width / 2;
+        const nodeY = rect.top - visualRect.top + rect.height / 2;
+        const angle = Math.atan2(nodeY - centerY, nodeX - centerX) * 180 / Math.PI;
+        node.style.setProperty('--angle', angle);
+      });
+    };
+
+    // Create initial nodes
+    const initialNodes = Array(Math.floor(Math.random() * 5 + 3))
+      .fill(null)
+      .map(generateNode);
+    
+    setNetworkNodes(initialNodes);
+
+    // Update line angles whenever nodes change
+    setTimeout(updateLineAngles, 100); // Small delay to ensure DOM is updated
+
+    // Interval for simulating user movement
+    const moveInterval = setInterval(() => {
+      setNetworkNodes(prevNodes => {
+        const nodes = [...prevNodes];
+        
+        if (Math.random() > 0.5 && nodes.length < 8) {
+          const newUser = generateNode();
+          console.log('New user joined:', newUser.id);
+          nodes.push(newUser);
+        } else if (nodes.length > 3) {
+          const removedIndex = Math.floor(Math.random() * nodes.length);
+          console.log('User left:', nodes[removedIndex].id);
+          nodes.splice(removedIndex, 1);
+        }
+
+        // Update line angles after nodes change
+        setTimeout(updateLineAngles, 100);
+        return nodes;
+      });
+    }, Math.random() * 5000 + 5000);
+
+    // Add window resize handler
+    window.addEventListener('resize', updateLineAngles);
+
+    // Cleanup
+    return () => {
+      clearInterval(moveInterval);
+      window.removeEventListener('resize', updateLineAngles);
+    };
+  }, []);
 
   // Redirect if no nickname
   if (!nickname) {
@@ -68,9 +150,49 @@ function GameInterface() {
       setIsRecording(false);
     }
   };
-
+  
   return (
     <div className="game-container">
+
+<div className={`network-visualization ${isOpen ? '' : 'expanded'}`}>
+      {/* Add orbital rings before other elements */}
+      <div className="orbital-rings">
+        <div className="orbit-ring ring-1"></div>
+        <div className="orbit-ring ring-2"></div>
+        <div className="orbit-ring ring-3"></div>
+      </div>
+
+      <div className="radar-sweep"></div>
+      <div className="center-point"></div>
+      <div className="connected-users">
+        {networkNodes.map((node) => (
+          <div 
+            key={node.id}
+            className="user-node"
+            style={{
+              left: `${node.x}%`,
+              top: `${node.y}%`
+            }}
+          >
+            <i className={`fas ${node.avatar}`}></i>
+            <svg className="connection-line">
+              <line 
+                x1="50%" 
+                y1="50%" 
+                x2="100%" 
+                y2="50%"
+                stroke="#A78BFA"
+                strokeWidth="1"
+                strokeOpacity="0.5"
+              />
+            </svg>
+            <div className="node-distance">
+              {Math.floor(Math.sqrt(Math.pow(50 - node.x, 2) + Math.pow(50 - node.y, 2)))}m
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>    
 
     <div className="fixed-hamburger">
       <button className="sidebar-btn" onClick={toggleSidebar}>
@@ -130,6 +252,8 @@ function GameInterface() {
           <i className={`fas ${avatar || 'fa-user'}`}></i>
         </div>
       </div>
+
+  
 
       <div className={`message-container ${isOpen ? '' : 'expanded'}`}>
         <div className="message-input-wrapper">

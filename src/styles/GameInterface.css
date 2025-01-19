@@ -426,3 +426,234 @@
 .hidden-file-input {
   display: none;
 }
+.files-preview-area {
+  position: fixed;
+  bottom: 200px;
+  left: 260px;
+  right: 0;
+  height: 400px;
+  padding: 0 2rem;
+  z-index: 900;
+  transition: left 0.3s ease;
+}
+
+.files-preview-area.expanded {
+  left: 60px;
+  right:60px;
+}
+
+.glass-container {
+  background: rgba(45, 45, 48, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(167, 139, 250, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  height: 100%;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.glass-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #A78BFA;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.glass-header i {
+  font-size: 1.2rem;
+}
+
+.files-display {
+  height: calc(100% - 2.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-text {
+  color: #6B7280;
+  font-style: italic;
+  text-align: center;
+}
+.network-visualization {
+  position: absolute;
+  top: 60px;
+  left: 260px;
+  right: 0;
+  bottom: 120px;
+  overflow: hidden;
+  transition: left 0.3s ease;
+}
+
+.network-visualization.expanded {
+  left: 40px;
+}
+
+.center-point {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background: #A78BFA;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 15px rgba(167, 139, 250, 0.5);
+}
+
+.user-node {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(167, 139, 250, 0.1);
+  border: 2px solid #A78BFA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  animation: nodeAppear 0.5s ease-out;
+}
+
+.user-node i {
+  color: #A78BFA;
+  font-size: 1.2rem;
+  z-index: 2;
+}
+
+.connection-line {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform-origin: center;
+  pointer-events: none;
+  transform: rotate(calc(var(--angle) * 1deg));
+}
+
+.radar-sweep {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, #A78BFA 0%, transparent 100%);
+  transform-origin: left;
+  animation: sweep 4s linear infinite;
+}
+
+.node-distance {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: #A78BFA;
+  white-space: nowrap;
+}
+
+@keyframes sweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes nodeAppear {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+.orbital-rings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+}
+
+.orbit-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(167, 139, 250, 0.1);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.ring-1 {
+  width: 200px;
+  height: 200px;
+  animation: rotate 20s linear infinite;
+}
+
+.ring-2 {
+  width: 400px;
+  height: 400px;
+  animation: rotate 30s linear infinite reverse;
+}
+
+.ring-3 {
+  width: 600px;
+  height: 600px;
+  animation: rotate 40s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Update existing center-point styles */
+.center-point {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background: #A78BFA;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 15px rgba(167, 139, 250, 0.5);
+  z-index: 2;
+}
+
+/* Add glow effect to rings on hover */
+.orbit-ring:hover {
+  border-color: rgba(167, 139, 250, 0.3);
+  box-shadow: 0 0 15px rgba(167, 139, 250, 0.2);
+  transition: all 0.3s ease;
+}
+
+/* Optional: Add distance markers */
+.ring-1::after,
+.ring-2::after,
+.ring-3::after {
+  content: attr(data-distance);
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  color: rgba(167, 139, 250, 0.5);
+  font-size: 0.8rem;
+}
+
+.ring-1::after { content: "25m"; }
+.ring-2::after { content: "50m"; }
+.ring-3::after { content: "100m"; }
